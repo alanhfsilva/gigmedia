@@ -7,4 +7,4 @@ This is the first part of the test to organize the ideas. These are the steps I'
 1. Set up the database tables (via migrations) - Done
 1. Set up the fake data tables (via seeder) - Done
 1. Create the API and routes - Done
-1. Create test for the API
+1. Create test for the API - Done
