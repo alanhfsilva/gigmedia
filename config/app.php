@@ -174,13 +174,9 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-        'providers' => [
         
-        // Other app providers...
-        App\Providers\FakeDataServiceProvider::class,
-],
-
-
+        // Other service providers...
+        // App\Providers\CombinationServiceProvider::class,
     ],
 
     /*

@@ -31,4 +31,22 @@ class FakeDataService
 
         return $results;
     }
+
+    /**
+     * Generate the abbreviation of a string considering the first letter of each word.
+     *
+     * @param string $content
+     * @return string
+     */
+    public function generateAbbreviation(string $content): string
+    {
+        $words = explode(' ', $content);
+        $abbreviation = '';
+
+        foreach ($words as $word) {
+            $abbreviation .= $word[0];
+        }
+
+        return $abbreviation;
+    }
 }

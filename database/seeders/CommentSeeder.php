@@ -8,11 +8,11 @@ use Illuminate\Database\Seeder;
 
 class CommentSeeder extends Seeder
 {
-    protected $combinationService;
+    protected $fakeDataService;
 
-    public function __construct(FakeDataService $combinationService)
+    public function __construct(FakeDataService $fakeDataService)
     {
-        $this->combinationService = $combinationService;
+        $this->fakeDataService = $fakeDataService;
     }
 
     /**
@@ -25,13 +25,14 @@ class CommentSeeder extends Seeder
         // Generate fake comments based on combinations
         $randomWords = "Cool,Strange,Funny,Laughing,Nice,Awesome,Great,Horrible,Beautiful,PHP,Vegeta,Italy,Joost";
         $words = explode(',', $randomWords);
-        $combinations = $this->combinationService->generateCombinations($words);
+        $combinations = $this->fakeDataService->generateCombinations($words);
+        dd($combinations);
 
-        foreach ($combinations as $combination) {
-            // Comment::factory()->create([
-            //     'content' => $combination,
-            //     'abbreviation' => 'CS'
-            // ]);
-        }
+        // foreach ($combinations as $combination) {
+        //     // Comment::factory()->create([
+        //     //     'content' => $combination,
+        //     //     'abbreviation' => 'CS'
+        //     // ]);
+        // }
     }
 }
