@@ -14,7 +14,7 @@ class PostSeeder extends Seeder
      */
     public function run()
     {
-        // Creat
+        // Create 5 posts in the database
         Post::create(['topic' => 'Fishing']);
         Post::create(['topic' => 'Coding']);
         Post::create(['topic' => 'Playing']);
