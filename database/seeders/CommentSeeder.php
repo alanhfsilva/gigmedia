@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Comment;
 use App\Models\Post;
 use App\Services\FakeDataService;
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 
 class CommentSeeder extends Seeder
@@ -39,6 +40,8 @@ class CommentSeeder extends Seeder
                 'content' => $combination,
                 'abbreviation' => $this->fakeDataService->generateAbbreviation($combination),
                 'post_id' => $posts->random()->id,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
             ];
         }
 
