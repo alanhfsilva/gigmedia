@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreCommentRequest;
 use App\Models\Comment;
 use App\Services\FakeDataService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
 class CommentController extends BaseController
 {
@@ -34,35 +34,8 @@ class CommentController extends BaseController
         return $this->filterAndRespond($query, $request);
     }
 
-    public function store(Request $request)
+    public function store(StoreCommentRequest $request)
     {
-        $request->merge([
-            'content' => strtolower($request->content),
-            'abbreviation' => strtolower($request->abbreviation),
-        ]);
-
-        $validator = Validator::make($request->all(), [
-            'abbreviation' => 'required|regex:/^\S*$/|unique:comments,abbreviation',
-            'content' => 'required|unique:comments,content',
-            'post_id' => 'required|exists:posts,id'
-        ]);
-
-        $validator->after(function ($validator) use ($request) {
-            $content = $request->input('content');
-            $combinations = $this->fakeDataService->generateWordsCombinations($content);
-
-            foreach ($combinations as $combination) {
-                if (Comment::where('content', $combination)->exists()) {
-                    $validator->errors()->add('content', 'The content is a duplicate considering word combinations.');
-                    break;
-                }
-            }
-        });
-
-        if ($validator->fails()) {
-            return $this->errorResponse($validator->errors(), 422);
-        }
-
         $comment = Comment::create($request->all());
 
         return response()->json($comment, 201);

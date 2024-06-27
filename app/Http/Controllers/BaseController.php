@@ -26,10 +26,12 @@ class BaseController extends Controller
             }
         }
 
-        if ($request->has('with') && in_array($request->with, $this->availableRelations)) {
-            $query->with($request->with);
-        } else {
-            return $this->errorResponse('Invalid relation', 400);
+        if ($request->has('with')) {
+            if (in_array($request->with, $this->availableRelations)) {
+                $query->with($request->with);
+            } else {
+                return $this->errorResponse('Invalid relation', 400);
+            }
         }
 
         if (in_array($sort, $this->filterable)) {
