@@ -28,13 +28,24 @@ class BaseController extends Controller
 
         if ($request->has('with') && in_array($request->with, $this->availableRelations)) {
             $query->with($request->with);
+        } else {
+            return $this->errorResponse('Invalid relation', 400);
         }
 
-        $query->orderBy($sort, $direction);
+        if (in_array($sort, $this->filterable)) {
+            $query->orderBy($sort, $direction);
+        } else {
+            return $this->errorResponse('Invalid sort', 400);
+        }
 
         $total = $query->count();
         $result = $query->skip(($page - 1) * $limit)->take($limit)->get();
 
         return response()->json(['result' => $result, 'count' => $total]);
+    }
+
+    protected function errorResponse($message, $code)
+    {
+        return response()->json(['error' => $message], $code);
     }
 }
