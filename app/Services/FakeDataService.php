@@ -49,29 +49,4 @@ class FakeDataService
 
         return $abbreviation;
     }
-
-    /**
-     * Generate all possible word combinations from a given content given.
-     *
-     * @param string $content
-     * @return array
-     */
-    public function generateWordsCombinations($content)
-    {
-        $words = explode(' ', $content);
-        $combinations = [];
-
-        foreach ($words as $word) {
-            $combinations[] = $word;
-        }
-
-        for ($i = 0; $i < count($words); $i++) {
-            for ($j = $i + 1; $j < count($words); $j++) {
-                $combinations[] = $words[$i] . ' ' . $words[$j];
-                $combinations[] = $words[$j] . ' ' . $words[$i];
-            }
-        }
-
-        return $combinations;
-    }
 }
