@@ -3,10 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Comment;
+use App\Services\FakeDataService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class CommentController extends BaseController
 {
+    protected $fakeDataService;
+
     protected $filterable = [
         'id',
         'content',
@@ -18,6 +22,11 @@ class CommentController extends BaseController
 
     protected $availableRelations = ['post'];
 
+    public function __construct(FakeDataService $fakeDataService)
+    {
+        $this->fakeDataService = $fakeDataService;
+    }
+
     public function index(Request $request)
     {
         $query = Comment::query();
@@ -27,11 +36,32 @@ class CommentController extends BaseController
 
     public function store(Request $request)
     {
-        $request->validate([
-            'abbreviation' => 'required|unique:comments,abbreviation',
+        $request->merge([
+            'content' => strtolower($request->content),
+            'abbreviation' => strtolower($request->abbreviation),
+        ]);
+
+        $validator = Validator::make($request->all(), [
+            'abbreviation' => 'required|regex:/^\S*$/|unique:comments,abbreviation',
             'content' => 'required|unique:comments,content',
             'post_id' => 'required|exists:posts,id'
         ]);
+
+        $validator->after(function ($validator) use ($request) {
+            $content = $request->input('content');
+            $combinations = $this->fakeDataService->generateWordsCombinations($content);
+
+            foreach ($combinations as $combination) {
+                if (Comment::where('content', $combination)->exists()) {
+                    $validator->errors()->add('content', 'The content is a duplicate considering word combinations.');
+                    break;
+                }
+            }
+        });
+
+        if ($validator->fails()) {
+            return $this->errorResponse($validator->errors(), 422);
+        }
 
         $comment = Comment::create($request->all());
 
