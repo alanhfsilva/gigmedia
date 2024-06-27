@@ -9,6 +9,13 @@ This is a step-by-step to help while executing the project.
     - Docker
 - Details:
     - API for Post (list/delete) and Comments (list/delete/create)
+        ```
+            GET      | api/comments
+            POST     | api/comments
+            DELETE   | api/comments/{id}
+            GET      | api/posts
+            DELETE   | api/posts/{id}
+        ```
 
 ## Running the project
 - You can run the project using your local PHP, Composer and MySQL software or take the option below using Docker
