@@ -25,7 +25,7 @@ class PostControllerTest extends TestCase
                 'count'
             ]);
         $response->assertJsonCount(10, 'result');
-        $response->assertJsonCount(20, 'count');
+        $response->assertJson(['count' => 20]);
     }
 
     /** @test */
